@@ -3,11 +3,6 @@ import Router from "next/router";
 
 class Form extends Component {
 
-    constructor(props, state) {
-        super(props, state);
-        // Eventualy props not needed & set eventEmitter?
-    }
-
     state = {
         phone: '',
         amount: '',

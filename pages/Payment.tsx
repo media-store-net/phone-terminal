@@ -1,46 +1,57 @@
-import React from "react";
-import axios from 'axios';
+import React, {Component} from "react";
+import Router from "next/router";
+import axios, {AxiosResponse} from 'axios';
 
-import {providerInterface} from "../components/Provider/Provider";
 import Layout from "../components/layout/Layout";
 import Form from "../components/Form/Form";
+import {providerInterface} from "../components/Provider/Provider";
 
-const Payment = (props) => {
+class Payment extends Component {
 
-    const provider: providerInterface = props.provider;
+    state = {
+        provider: {
+            id: null,
+            name: ''
+        }
+    };
 
-    return (
-        <Layout>
-            <section className="row">
-                <div className="col-md-8 offset-md-2">
-                    <div className="card">
-                        <div className="card-header text-center">
-                            <h3>Please take your Pay</h3>
-                        </div>
-                        <div className="card-body">
-                            <p className="lead">
-                                <strong>Selected Provider: </strong>
-                                <span>{provider.name}</span>
-                            </p>
-                            <Form />
+    componentDidMount(): void {
+        const router = Router;
+
+        const protocol = window.location.protocol;
+        const url = protocol + '//' + window.location.hostname + ':' + window.location.port;
+
+        axios.get(`${url}/api/provider?id=${router.query.provider}`)
+            .then((response: AxiosResponse) => {
+                    response.data.map((prov: providerInterface) => {
+                        this.setState({provider: prov})
+                    });
+                }
+            );
+    }
+
+    render(): React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
+        return (
+            <Layout>
+                <section className="row">
+                    <div className="col-md-8 offset-md-2">
+                        <div className="card">
+                            <div className="card-header text-center">
+                                <h3>Please take your Pay</h3>
+                            </div>
+                            <div className="card-body">
+                                <p className="lead">
+                                    <strong>Selected Provider: </strong>
+                                    <span>{this.state.provider.name}</span>
+                                </p>
+                                <Form/>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
-        </Layout>
-    );
-};
-
-Payment.getInitialProps = async function (context) {
-
-    const protocol: string = context.req.headers.referer.split('://')[0];
-    const url: string = `${protocol}://${context.req.headers.host}/api/provider?id=${context.query.provider}`;
-
-    const fetch = await axios.get(url);
-    const data: providerInterface[] = await fetch.data;
-    if (data) {
-        return {provider: data[0]};
+                </section>
+            </Layout>
+        );
     }
-};
+}
 
 export default Payment;
