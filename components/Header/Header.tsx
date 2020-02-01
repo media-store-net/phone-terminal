@@ -6,7 +6,7 @@ const Header = (props) => {
     return (
         <section className="row">
             <div className="col text-center">
-                <h1>Phone-Paymaent Terminal</h1>
+                <h1>Phone-Payment Terminal</h1>
             </div>
             <style jsx>
                 {`

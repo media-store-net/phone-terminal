@@ -7,7 +7,6 @@
     "dev": "next",
     "build": "next build",
     "start": "next start -p $PORT",
-    "eject": "next eject",
     "test": "jest"
   },
   "keywords": [],

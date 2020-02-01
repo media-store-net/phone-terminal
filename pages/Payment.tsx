@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import Router from "next/router";
+import Link from "next/link";
 import axios, {AxiosResponse} from 'axios';
 
 import Layout from "../components/layout/Layout";
@@ -43,6 +44,11 @@ class Payment extends Component {
                                 <p className="lead">
                                     <strong>Selected Provider: </strong>
                                     <span>{this.state.provider.name}</span>
+                                    {this.state.provider.name && <span className="float-right">
+                                      <Link href={'/'}>
+                                        <a>Change provider?</a>
+                                      </Link>
+                                    </span>}
                                 </p>
                                 <Form/>
                             </div>
